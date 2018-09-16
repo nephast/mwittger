@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user');
 
 const messageSchema = new mongoose.Schema({
   text: {
@@ -17,7 +18,7 @@ const messageSchema = new mongoose.Schema({
 messageSchema.pre('remove', async function(next) {
   try {
     let user = await User.findById(this.user);
-    User.messages.remove(this.id);
+    user.messages.remove(this.id);
     await user.save();
     return next();
   } catch (err) {

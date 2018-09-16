@@ -19,6 +19,27 @@ const createMessage = async (req, res, next) => {
   }
 };
 
+const getMessage = async (req, res, next) => {
+  try {
+    const message = await  db.Message.findById(req.params.message_id);
+    return res.status(200).json(message);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const deleteMessage = async (req, res, next) => {
+  try {
+    const foundMessage = await db.Message.findById(req.params.message_id);
+    await foundMessage.remove();
+    return res.status(200).json(foundMessage);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
-  createMessage
+  createMessage,
+  getMessage,
+  deleteMessage
 };
